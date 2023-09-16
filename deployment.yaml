@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imxbackend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: imxbackend-app
+  template:
+    metadata:
+      labels:
+        app: imxbackend-app
+    spec:
+      containers:
+        - name: imx-poc-container
+          image: dinesh9535/imx-poc-repo:v1
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imxbackend-service
+spec:
+  selector:
+    app: imxbackend-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer  # Use LoadBalancer type to expose externally (requires AKS setup)
